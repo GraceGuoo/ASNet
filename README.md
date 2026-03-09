@@ -47,6 +47,7 @@ and
   </ul>
 </details>
 
+If you would like to download the dataset, please contact me.
 
 ### Pretrain weights:
 Download the pretrained Resnet-152 [here](http://ipb.uni-bonn.de/html/projects/bonnetal/extractors/resnet/resnet152-b121ed2d.pth).

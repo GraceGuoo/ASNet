@@ -6,7 +6,7 @@ import torch.nn.functional as F
 import numpy as np
 import math,time
 
-from resnet import Backbone_ResNet152_in3, Backbone_ResNet101_in3, Backbone_ResNet50_in3
+from resnet import Backbone_ResNet152
 
 from torch.nn.modules.activation import PReLU
 from toolbox.dct import MultiSpectralAttentionLayer as DCT
@@ -242,7 +242,7 @@ class ASNet(nn.Module):
             self.layer3_rgb,
             self.layer4_rgb,
             self.layer5_rgb,
-        ) = Backbone_ResNet152_in3(pretrained=True)
+        ) = Backbone_ResNet152(pretrained=True)
 
         self.rgbconv1 = BasicConv2d(64, 64, kernel_size=3, padding=1)  # 240 320
         self.rgbconv2 = BasicConv2d(256, 128, kernel_size=3, padding=1)  # 120 160

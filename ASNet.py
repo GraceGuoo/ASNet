@@ -378,10 +378,7 @@ class ASNet(nn.Module):
         edge = self.edge_pred(semantic2)
 
         gate = gate.reshape(-1)
-        try:
-            gate = (gate[0] + gate[1]) / 2
-        except IndexError as e:
-            print(e)
+        
         return semantic, semantic2, sal, edge, gate
 
 

@@ -271,7 +271,10 @@ class ASNet(nn.Module):
         self.fusion1 = Fusion(256, 256)
         self.fusion2 = Fusion(256, 128)
         self.fusion3 = Fusion(64, 64)
-       
+        self.conf_conv = nn.Sequential(nn.Conv2d(512, 512, kernel_size=1, bias=False),
+            nn.BatchNorm2d(512),
+            nn.ReLU(inplace=True)
+        )
         self.gap1 = nn.AdaptiveAvgPool2d(1)
         self.gap2 = nn.AdaptiveAvgPool2d(1)
         self.fc = nn.Sequential(
@@ -281,7 +284,7 @@ class ASNet(nn.Module):
             nn.Linear(512, 256 + 1),
             nn.Sigmoid(),
         )
-
+    
         self.predsal = nn.Sequential(
             TransBottleneck(256, 128),
             TransBottleneck(128, 64),
@@ -336,10 +339,10 @@ class ASNet(nn.Module):
         ir3 = self.rgbconv3(ir3)
         ir4 = self.rgbconv4(ir4)
         ir5 = self.rgbconv5(ir5)
-
-        rgb_gap = self.gap1(x5)
+        
+        rgb_gap = self.gap1(self.conf_conv(x5))
         rgb_gap = rgb_gap.view(bz, -1)
-        depth_gap = self.gap2(ir5)
+        depth_gap = self.gap2(self.conf_conv(ir5))
         depth_gap = depth_gap.view(bz, -1)
         feat = torch.cat((rgb_gap, depth_gap), dim=1)
         feat = self.fc(feat)
